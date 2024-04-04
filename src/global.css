@@ -24,5 +24,5 @@ body{
 
 /* Remove filler between last item of datagrid and the pagination */
 .MuiDataGrid-filler {
-    height: 0;
+    height: 0 !important;
 }

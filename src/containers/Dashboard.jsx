@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import { Breadcrumbs, Link, Card, Box } from '@mui/material';
@@ -24,6 +25,10 @@ import Chatbot from "../components/chatbot/Chatbot";
 
 export default function Dashboard() {
 
+    // Access the user object from the Redux store
+    const user = useSelector(state => state.auth.user);
+
+
     const [value, setValue] = useState('1');
     const [portfolioName, setPortfolioName] = useState('');
     const [isChatOpen, setChatOpen] = useState(false);
@@ -39,7 +44,8 @@ export default function Dashboard() {
     const { pid } = useParams(); // Get the pid param from the URL
 
     useEffect(() => {
-        axios.get('http://localhost:8000/portfolio/get-all/')
+        if (user) {
+            axios.get(`http://localhost:8000/portfolio/get-all/${user.id}/`)
             .then(response => {
                 const portfolio = response.data.find(portfolio => portfolio.id === Number(pid));
                 if (portfolio) {
@@ -49,7 +55,8 @@ export default function Dashboard() {
             .catch(error => {
                 console.error('There was an error!', error);
             });
-    }, [pid]);
+        }
+    }, [pid, user]);
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -63,15 +70,15 @@ export default function Dashboard() {
                         <h3>{portfolioName}</h3>
                     </Link>
                 </Breadcrumbs>
-                
+
                 <Card sx={{ marginTop: "1%", padding: "3%", paddingBottom: "0", paddingTop: "1%", backgroundColor: "#32323e", color: "white", borderRadius: "8px" }}>
                     <TabContext value={value}>
                         <Box>
                             <TabList centered onChange={handleChange} aria-label="tab" sx={{ '& .MuiTabs-indicator': { height: '5px' } }}>
-                                <Tab icon={<BarChartIcon sx={{color:"white"}}/>} label="Common" value="1" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
-                                <Tab icon={<TransactionsIcon sx={{color:"white"}}/>} label="Transactions" value="2" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
-                                <Tab icon={<TroubleshootIcon sx={{color:"white"}}/>} label="Metrics" value="3" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
-                                <Tab icon={<NewspaperIcon sx={{color:"white"}}/>} label="News" value="4" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
+                                <Tab icon={<BarChartIcon sx={{ color: "white" }} />} label="Common" value="1" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
+                                <Tab icon={<TransactionsIcon sx={{ color: "white" }} />} label="Transactions" value="2" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
+                                <Tab icon={<TroubleshootIcon sx={{ color: "white" }} />} label="Metrics" value="3" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
+                                <Tab icon={<NewspaperIcon sx={{ color: "white" }} />} label="News" value="4" sx={{ '&.Mui-selected': { outline: 'none' }, paddingBottom: '25px', color: "white" }} />
                             </TabList>
                         </Box>
                     </TabContext>
@@ -85,7 +92,7 @@ export default function Dashboard() {
                         <Transactions pid={pid} />
                     </TabPanel>
                     <TabPanel value="3" style={{ paddingLeft: 0, paddingRight: 0 }}>
-                        <RiskMetrics pid = {pid}/>
+                        <RiskMetrics pid={pid} />
                     </TabPanel>
                     <TabPanel value="4" style={{ paddingLeft: 0, paddingRight: 0 }}>
                         <PortfolioNews pid={pid} />
@@ -101,11 +108,11 @@ export default function Dashboard() {
                             bottom: '30px',
                             right: '40px',
                             backgroundColor: '#30798f',
-                            
+
                         }}
                         onClick={() => setChatOpen(true)}
                     >
-                        <ChatIcon sx={{color:"white"}}/>
+                        <ChatIcon sx={{ color: "white" }} />
                     </Fab>
                 )}
             </div>
