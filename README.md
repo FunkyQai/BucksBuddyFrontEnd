@@ -1,10 +1,9 @@
-# BucksBuddy - Portfolio Manager App
+# Description
 
 This is the React frontend for my final year project, BucksBuddy. It's a portfolio manager app designed to help users manage their investments.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Getting Started
+## Installation
 
 To get a local copy up and running, follow these steps:
 
