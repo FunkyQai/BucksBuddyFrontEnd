@@ -1,0 +1,12 @@
+body{
+    min-height: 100vh;
+    background-color: #282832 ;
+}
+
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeSmall {
+    color: #2f77d3 !important;
+}
+
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root {
+    color: #c4c4c4 !important;
+}
