@@ -24,6 +24,7 @@ const CreatePortfolio = ({ open, handleClose }) => {
         }
 
         try {
+            console.log(user.id);
             const response = await axios.post('http://localhost:8000/portfolio/create/', {
                 user_id: user.id, // Replace with the actual user ID
                 name,

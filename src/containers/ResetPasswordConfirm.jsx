@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { reset_password_confirm } from "../actions/auth";
-
-
+import { Card, Grid, TextField, Button, Box, Typography } from '@mui/material';
 
 const ResetPasswordConfirm = ({ reset_password_confirm }) => {
 
@@ -30,47 +29,63 @@ const ResetPasswordConfirm = ({ reset_password_confirm }) => {
         } catch (error) {
           setResetFailed(true);
         }
-      }
+    }
 
     if (requestSent) {
         return <Navigate to='/' />; 
     }
 
     return (
-        <div className='container mt-5'>
-            {resetFailed && <div style={{color: 'red'}}>Password reset failed</div>}
-            <form onSubmit={e => onSubmit(e)}>
-            <div className='form-group'>
-                    <input
-                        className='form-control'
-                        type='password'
-                        placeholder='New Password'
-                        name='new_password'
-                        value={new_password}
-                        onChange={e => onChange(e)}
-                        minLength='6'
+        <Grid container component="main" sx={{ height: '100vh', backgroundColor: t => t.palette.grey[900] }}>
+            <Card
+                sx={{
+                    m: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    p: 4,
+                    width: '100%',
+                    borderRadius: '20px',
+                    maxWidth: 400,
+                }}
+            >
+                <Typography component="h1" variant="h5">
+                    Reset Password
+                </Typography>
+                <Box component="form" noValidate onSubmit={(e) => onSubmit(e)} sx={{ mt: 1, width: '100%' }}>
+                    <TextField
+                        margin="normal"
                         required
+                        fullWidth
+                        id="new_password"
+                        label="New Password"
+                        name="new_password"
+                        type="password"
+                        onChange={(e) => onChange(e)}
                     />
-                </div>
-                <div className='form-group'>
-                    <input
-                        className='form-control'
-                        type='password'
-                        placeholder='Confirm New Password'
-                        name='re_new_password'
-                        value={re_new_password}
-                        onChange={e => onChange(e)}
-                        minLength='6'
+                    <TextField
+                        margin="normal"
                         required
+                        fullWidth
+                        id="re_new_password"
+                        label="Confirm New Password"
+                        name="re_new_password"
+                        type="password"
+                        onChange={(e) => onChange(e)}
                     />
-                </div>
-                <br></br>
-                <button className='btn btn-primary' type='submit'>Reset Password</button>
-            </form>
-        </div>
+                    {resetFailed && <div style={{color: 'red'}}>Password reset failed</div>}
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Reset Password
+                    </Button>
+                </Box>
+            </Card>
+        </Grid>
     );
-
 };
-
 
 export default connect(null, { reset_password_confirm }) (ResetPasswordConfirm);

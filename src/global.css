@@ -10,3 +10,19 @@ body{
 .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root {
     color: #c4c4c4 !important;
 }
+
+
+/* Styles for datagrid table headers */
+.MuiDataGrid-root .MuiDataGrid-columnHeader {
+    background-color: #d9d9da;
+}
+
+.MuiDataGrid-columnHeaderTitle { 
+    color: #35353d !important;
+    font-weight: 700 !important;
+}
+
+/* Remove filler between last item of datagrid and the pagination */
+.MuiDataGrid-filler {
+    height: 0;
+}

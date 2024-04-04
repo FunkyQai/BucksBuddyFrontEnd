@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { signup } from "../actions/auth";
-import { Grid, CssBaseline, Card, Typography, Box, TextField, Button, Alert } from '@mui/material';
+import { Grid, CssBaseline, Card, Typography, Box, TextField, Button } from '@mui/material';
 import Stars from '../images/Stars.jpg';
-
-
 
 const Signup = ({ signup, isAuthenticated }) => {
     const [formData, setFormData] = useState({ 
@@ -33,10 +31,6 @@ const Signup = ({ signup, isAuthenticated }) => {
     }
 
     // Redirects
-    if (isAuthenticated) {
-        return <Navigate to='/home' />; 
-    }
-
     if (accountCreated) {
         return <Navigate to='/' />;
     }
@@ -113,7 +107,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link to='/login'>
+                            <Link to='/'>
                                 {"Already have an account? Sign In"}
                             </Link>
                         </Grid>

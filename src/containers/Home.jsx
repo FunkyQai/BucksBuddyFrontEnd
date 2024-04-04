@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Card as MuiCard, Grid, TextField, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
@@ -11,8 +12,6 @@ import Snackbar from '@mui/material/Snackbar';
 import CreatePortfolio from '../components/portfolio/CreatePortfolio';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-
-
 
 const Card = styled(MuiCard)({
     backgroundColor: '#32323e',
@@ -27,6 +26,10 @@ const Card = styled(MuiCard)({
 });
 
 const Home = () => {
+
+    // Access the user object from the Redux store
+    const user = useSelector(state => state.auth.user);
+
     const [portfolios, setPortfolios] = useState([]);
 
     //For create portfolio
@@ -44,12 +47,16 @@ const Home = () => {
 
     useEffect(() => {
         const fetchPortfolios = async () => {
-            const response = await axios.get('http://localhost:8000/portfolio/get-all/');
-            setPortfolios(response.data);
+            if (user) {
+                const response = await axios.get(`http://localhost:8000/portfolio/get-all/${user.id}/`);
+                setPortfolios(response.data);
+            }
         };
 
-        fetchPortfolios();
-    }, []);
+        if (user) {
+            fetchPortfolios();
+        }
+    }, [user]); // Depend on user so the effect runs again if the user changes
 
 
     const handleClickPortfolio = (portfolio) => {
@@ -83,7 +90,7 @@ const Home = () => {
             await axios.put(`http://localhost:8000/portfolio/update/${currentPortfolio.id}/`, currentPortfolio)
 
             // Fetch the updated data
-            const response = await axios.get('http://localhost:8000/portfolio/get-all/');
+            const response = await axios.get(`http://localhost:8000/portfolio/get-all/${user.id}/`);
 
             // Update the state with the updated data
             setPortfolios(response.data);
@@ -137,7 +144,7 @@ const Home = () => {
             await axios.delete(`http://localhost:8000/portfolio/delete/${portfolio.id}/`)
 
             // Fetch the updated data
-            const response = await axios.get('http://localhost:8000/portfolio/get-all/');
+            const response = await axios.get(`http://localhost:8000/portfolio/get-all/${user.id}/`);
 
             // Update the state with the updated data
             setPortfolios(response.data);
@@ -233,4 +240,5 @@ const Home = () => {
     );
 };
 
-export default Home;
+
+  export default Home;
